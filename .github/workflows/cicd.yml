@@ -1,49 +1,44 @@
-name: CICD Pipeline
+  name: CICD pipeline
 
-on:
-  push:
-    branches:
-      - main
-
+on: [push]
 
 jobs:
-  Testing:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout the repo
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"
 
-      - name: Install Dependencies
+      - name: Install packages
         run: npm install
 
-      - name: Run Tests
+      - name: Test the application
         run: npm run check
+         
 
-
-  Deploy:
+jobs:
+  deploy:
+    needs: test
     runs-on: self-hosted
-    needs: Testing
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout the code
+        uses: actions/checkout@v3
 
-      - name: Install Dependencies
+      - name: Install packages
         run: npm install
 
-
-
-      - name: Deploy to Server
+      - name: Run the application by PM2
         run: |
-          pm2 delete "Server" || true
-
-          pm2 start "npm start" --name="Server"
-
- 
-
-
+          ls -la
+          pm2 status
+          # Delete node-app process if exists
+          pm2 delete node-app || true
+          # Start a background process named node-app
+          pm2 start "npm run start" --name="node-app"
+          pm2 save
 
