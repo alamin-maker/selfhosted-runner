@@ -35,7 +35,7 @@ jobs:
 
       - name: the Application By PM2
         run: |
-          la-la
+          ls-la
           pm2 status
           pm2 delete Server || true
           #pm2 restart all
