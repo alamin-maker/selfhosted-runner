@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
+      - name: Install Node js
         uses: actions/setup-node@v2
         with:
-          node-version: '22.x'
+          node-version: '22'
 
       - name: Install Dependencies
         run: npm install
@@ -27,17 +27,18 @@ jobs:
     runs-on: self-hosted
     needs: Testing
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout the code
+        uses: actions/checkout@v3
 
-      - name: Install Dependencies
+      - name: Install Dependencie
         run: npm install
 
-      - name: Install PM2 Globally
-        run: sudo npm install -g pm2
-
-      - name: Deploy to Server
+      - name: the Application By PM2
         run: |
+          la-la
+          pm2 status
           pm2 delete Server || true
-          pm2 start npm --name "Server" -- start
+          #pm2 restart all
+          pm2 start "npm start" --name="server"
+          pm2 save 
 
