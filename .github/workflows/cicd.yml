@@ -33,7 +33,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Install PM2 Globally
+        run: npm install -g pm2
+
       - name: Deploy to Server
         run: |
           pm2 delete Server || true
           pm2 start npm --name "Server" -- start
+
